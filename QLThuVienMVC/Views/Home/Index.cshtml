@@ -1,8 +1,36 @@
-﻿@{
+﻿@using QLThuVienMVC.Models.UserModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @if (signInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Admin"))
+        {
+            <p>Hello Admin, @User.Identity.Name</p>
+        }
+        else if (User.IsInRole("DocGia"))
+        {
+            <p>Hello Reader, @User.Identity.Name</p>
+        }
+        else if (User.IsInRole("NhanVien"))
+        {
+            <p>Hello Staff, @User.Identity.Name</p>
+        }
+        else
+        {
+            <p>Hello @User.Identity.Name, your role is not recognized.</p>
+        }
+    }
+    else
+    {
+        <p>Hello Guest, please <a href="/Account/Login">login</a>.</p>
+    }
 </div>

@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using QLThuVienMVC.Models;
 using QLThuVienMVC.Models.UserModel;
 using QLThuVienMVC.ViewModels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QLThuVienMVC.Controllers
 {
@@ -35,7 +38,7 @@ namespace QLThuVienMVC.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Email and arent incorrect");
+                    ModelState.AddModelError("", "Email or Pass are incorrect");
                     return View(model);
                 }
                
@@ -136,9 +139,66 @@ namespace QLThuVienMVC.Controllers
         {
             return View();
         }
-        public IActionResult ChangePass()
+        
+        [HttpPost]
+        public async Task<IActionResult> VerifyEmail(VerifyEmailViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    return RedirectToAction("ChangePass", "Account", new { username = user.UserName });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Account doesn't exist!");
+                }
+            }
+            return View(model);
+        }
+        public async Task<IActionResult> Logout()
+        {
+            { 
+                await _signInManager.SignOutAsync(); 
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public IActionResult ChangePass(string username)
+        {
+            var model = new ChangePassViewModel();
+            model.Email = username;
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePass(ChangePassViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await _userManager.RemovePasswordAsync(user);
+                    if (result.Succeeded)
+                    {
+                        result = await _userManager.AddPasswordAsync(user, model.Password);
+                        return RedirectToAction("Login", "Account");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("","Something went wrong");
+                }
+            }
+            return View(model);
         }
         private async Task<IActionResult> CreateUserAndRole(RegisterViewModel model, string role, string maNhanVien = null, string maDocGia = null)
         {
@@ -167,10 +227,6 @@ namespace QLThuVienMVC.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
+    
     }
 }
