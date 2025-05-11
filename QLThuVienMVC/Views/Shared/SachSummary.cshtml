@@ -1,0 +1,12 @@
+﻿@model Sach
+<div class="card m-2 p-2" style="width: 18rem;">
+    <img src="@Url.Content("~/"+ Model.coverUrl) " class="card-img-top" alt="@Model.TenSach" style="height: 250px; object-fit: contain;" />
+    <div class="card-body">
+        <h5 class="card-title">@Model.TenSach</h5>
+        <p class="card-text">Tác giả: @Model.TacGia</p>
+        <p class="card-text">Thể loại: @Model.TheLoai</p>
+        <p class="card-text">Năm XB: @Model.NamXuatBan?.Year</p>
+        <p class="card-text">Giá trị: @Model.GiaTri?.ToString("n0") VNĐ</p>
+        <p class="card-text">Tình trạng: @Model.TinhTrang</p>
+    </div>
+</div>

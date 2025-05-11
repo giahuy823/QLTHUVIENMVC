@@ -1,14 +1,10 @@
-﻿@using QLThuVienMVC.Models.UserModel
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> signInManager
-@inject UserManager<ApplicationUser> userManager
-
+﻿
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<div class="text-black-50">
+    <h1 class="display-4">Welcome to QLTHUVIENMVC</h1>
 
     @if (signInManager.IsSignedIn(User))
     {
@@ -33,4 +29,33 @@
     {
         <p>Hello Guest, please <a href="/Account/Login">login</a>.</p>
     }
+</div>
+<div class="col-md-3">
+    @await Component.InvokeAsync("TheLoai")
+</div>
+<div>
+    <h1><strong>Sách hiện có: </strong></h1>
+    @if(Model != null)
+    {
+        <div class="d-flex flex-wrap gap-3">
+            @foreach (var sach in Model.Sachs)
+            {
+                <partial name="SachSummary" model="sach" />
+            }
+        </div>
+    }            
+    else
+    {
+        <div class="text-center text-dark">Chưa có sách</div>
+    }
+</div>
+<div page-model="@Model.Paging" page-action="Index"
+     page-classes-enabled="true"
+     page-class="btn shadow-sm transition-all"
+     page-class-normal="btn-outline-secondary"
+     page-class-selected="btn-primary fw-bold scale-112"
+     page-urltag="@Model.currentTag"
+     page-class-disabled="btn-light text-muted"
+     class="d-flex gap-2 my-4 justify-content-center"
+     style="transform: scale(0.95)">
 </div>

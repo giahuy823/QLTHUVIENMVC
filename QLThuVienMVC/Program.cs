@@ -11,6 +11,7 @@ builder.Services.AddDbContext<LibDataContext>(opts =>
     opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultString"));
 
 });
+builder.Services.AddScoped<InterfaceSach, SachRepository>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     options =>
     {
