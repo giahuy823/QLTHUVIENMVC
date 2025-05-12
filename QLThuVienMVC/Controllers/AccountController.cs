@@ -39,7 +39,7 @@ namespace QLThuVienMVC.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Email or Pass are incorrect");
-                    return View(model);
+                    return View();
                 }
                
             }
