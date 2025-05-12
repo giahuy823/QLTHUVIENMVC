@@ -8,72 +8,15 @@
     height: 100vh;
     position: fixed;
     left: 0;
-    top: 0;
-    background-color: #f8f9fa;
+    top: 50px;
+    background-color: #000000;
     border-right: 1px solid #dee2e6;
     padding: 20px;
     transition: all 0.3s;
     z-index: 1000;
-    margin-top: 56px; /* Chiều cao của navbar */
     }
 
-    .sidebar.collapsed {
-    width: 60px;
-    }
-
-    .sidebar.collapsed .menu-text {
-        display: none;
-    }
-
-    .sidebar .nav-item {
-    margin-bottom: 10px;
-    }
-
-    .sidebar .nav-link {
-    color: #333;
-    display: flex;
-    align-items: center;
-    padding: 8px 10px;
-    border-radius: 4px;
-    }
-
-    .sidebar .nav-link:hover {
-        background-color: #e9ecef;
-    }
-
-    .sidebar .nav-link i {
-        margin-right: 10px;
-        width: 20px;
-        text-align: center;
-    }
-
-    .sidebar.collapsed .nav-link i {
-    margin-right: 0;
-    }
-
-    .toggle-btn {
-    position: absolute;
-    right: -15px;
-    top: 20px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #fff;
-    border: 1px solid #dee2e6;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    }
-
-    .main-content {
-    margin-left: 250px;
-    transition: all 0.3s;
-    }
-
-    .sidebar.collapsed ~ .main-content {
-    margin-left: 60px;
-    }
+    
 </style>
 
 <div class="sidebar @(isCollapsed ? "collapsed" : "")" id="sidebar">
@@ -81,7 +24,11 @@
         <i class="fas @(isCollapsed ? "fa-chevron-right" : "fa-chevron-left")"></i>
     </button>
 
+    <h4 class="menu-text" asp-area="" asp-controller="Home" asp-action="Index">QLThuVienMVC</h4>
+    
+
     <ul class="nav flex-column">
+
         <li class="nav-item">
             <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <i class="fas fa-home"></i>
@@ -100,7 +47,21 @@
                 <span class="menu-text">Thông tin độc giả</span>
             </a>
         </li>
-        <!-- Thêm các mục menu khác tại đây -->
+        <li class="nav-item">
+            <button class="nav-link dropdown-toggle" type="button" id="accountToggle">
+                <i class="fas fa-user"></i>
+                <span class="menu-text">Tài khoản</span>
+            </button>
+            <ul class="submenu" id="accountDropdown">
+                <li>
+                    <a class="nav-link submenu-item">
+                        <i class="fas fa-user-cog"></i>
+                        <span class="menu-text">Thông tin cá nhân</span>
+                    </a>
+                </li>
+                @await Html.PartialAsync("_LoginPartial")
+            </ul>
+        </li>
     </ul>
 </div>
 
@@ -115,5 +76,17 @@
 
         // Đổi icon
         this.querySelector('i').className = isCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+    });
+
+     document.getElementById('accountToggle').addEventListener('click', function (e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById('accountDropdown');
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Đóng dropdown khi click ra ngoài
+    document.addEventListener('click', function (e) {
+        const dropdown = document.getElementById('accountDropdown');
+        if (dropdown) dropdown.style.display = 'none';
     });
 </script>

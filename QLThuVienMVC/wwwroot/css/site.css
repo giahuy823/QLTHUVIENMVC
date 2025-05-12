@@ -20,55 +20,56 @@ html {
 body {
   margin-bottom: 60px;
 }
+
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
     background-color: #f8f9fa;
-    border-right: 1px solid #dee2e6;
     padding: 20px;
-    transition: all 0.3s;
-    z-index: 1000;
-    margin-top: 56px; /* Chiều cao của navbar */
-    }
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
-    .sidebar.collapsed {
-    width: 60px;
-    }
+.sidebar h4 {
+    color: #ffffff;
+    font-weight: 600;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 10px;
+}
 
-    .sidebar.collapsed .menu-text {
-        display: none;
-    }
+.sidebar.collapsed {
+    width: 80px;
+}
 
-    .sidebar .nav-item {
+.sidebar.collapsed .menu-text {
+    display: none;
+}
+
+.sidebar .nav-item {
     margin-bottom: 10px;
-    }
+}
 
-    .sidebar .nav-link {
-    color: #333;
+.sidebar .nav-link {
+    color: #ffffff;
     display: flex;
     align-items: center;
     padding: 8px 10px;
     border-radius: 4px;
-    }
+}
 
-    .sidebar .nav-link:hover {
-        background-color: #e9ecef;
-    }
+.sidebar .nav-link:hover {
+    background-color: #00ffff;
+}
 
-    .sidebar .nav-link i {
-        margin-right: 10px;
-        width: 20px;
-        text-align: center;
-    }
+.sidebar .nav-link i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
 
-    .sidebar.collapsed .nav-link i {
+.sidebar.collapsed .nav-link i {
     margin-right: 0;
-    }
+}
 
-    .toggle-btn {
+.toggle-btn {
     position: absolute;
     right: -15px;
     top: 20px;
@@ -81,15 +82,52 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    }
+}
 
-    .main-content {
-    margin-left: 250px;
+.main-content {
+    margin-left: 280px;
     transition: all 0.3s;
-    }
+}
 
-    .sidebar.collapsed ~ .main-content {
-    margin-left: 60px;
-    }
+.sidebar.collapsed ~ .main-content {
+    margin-left: 100px;
+}
 
+.submenu {
+    display: none;
+    list-style: none;
+    padding-left: 20px;
+    margin-top: 5px;
+}
 
+.submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    color: #ffffff;
+    border-radius: 4px;
+}
+
+.submenu-item:hover {
+    background-color: #00ffff;
+}
+
+.sidebar.collapsed .submenu {
+    display: none !important;
+}
+
+.sidebar .dropdown-toggle {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    border-radius: 4px;
+}
+
+.sidebar .dropdown-toggle:hover {
+    background-color: #00ffff;
+}
