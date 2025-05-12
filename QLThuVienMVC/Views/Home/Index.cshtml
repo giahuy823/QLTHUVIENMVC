@@ -1,4 +1,6 @@
-﻿
+﻿@model QLThuVienMVC.ViewModels.SachViewModel
+
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -35,7 +37,7 @@
 </div>
 <div>
     <h1><strong>Sách hiện có: </strong></h1>
-    @if(Model != null)
+    @if (Model != null)
     {
         <div class="d-flex flex-wrap gap-3">
             @foreach (var sach in Model.Sachs)
@@ -43,7 +45,7 @@
                 <partial name="SachSummary" model="sach" />
             }
         </div>
-    }            
+    }
     else
     {
         <div class="text-center text-dark">Chưa có sách</div>

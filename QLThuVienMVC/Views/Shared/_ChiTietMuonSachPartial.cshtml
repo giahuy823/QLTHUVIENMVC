@@ -1,0 +1,40 @@
+﻿@model QLThuVienMVC.Models.Detail_Lib.ChiTietMuonSach
+
+<div class="chi-tiet-muon border p-3 mb-3 rounded">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group mb-3">
+                <label class="form-label">Sách</label>
+                <select asp-for="MaSach" class="form-select" asp-items="ViewBag.SachList">
+                    <option value="">-- Chọn sách --</option>
+                </select>
+                <span asp-validation-for="MaSach" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group mb-3">
+                <label asp-for="NgayPhaiTra" class="form-label">Ngày phải trả</label>
+                <input asp-for="NgayPhaiTra" type="date" class="form-control" />
+                <span asp-validation-for="NgayPhaiTra" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group mb-3">
+                <label asp-for="TinhTrangMuon" class="form-label">Tình trạng</label>
+                <select asp-for="TinhTrangMuon" class="form-select">
+                    <option value="Đang mượn">Đang mượn</option>
+                    <option value="Đã trả">Đã trả</option>
+                    <option value="Quá hạn">Quá hạn</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-1 d-flex align-items-end">
+            <button type="button" class="btn btn-sm btn-danger btn-xoa-sach">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </div>
+</div>

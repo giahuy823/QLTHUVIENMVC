@@ -1,0 +1,101 @@
+﻿@model QLThuVienMVC.Models.PhieuMuonSach
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Thông tin phiếu mượn sách</h5>
+    </div>
+    <div class="card-body">
+        <form id="muonSachForm" method="post">
+            <div class="row">
+                <!-- Thông tin phiếu mượn -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="MaPhieuMuon" class="form-label">Mã phiếu mượn</label>
+                        <input asp-for="MaPhieuMuon" class="form-control" readonly />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="NgayMuon" class="form-label">Ngày mượn</label>
+                        <input asp-for="NgayMuon" type="date" class="form-control" />
+                        <span asp-validation-for="NgayMuon" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Thông tin nhân viên & độc giả -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="MaNhanVien" class="form-label">Nhân viên</label>
+                        <select asp-for="MaNhanVien" class="form-select" asp-items="ViewBag.NhanVienList">
+                            <option value="">-- Chọn nhân viên --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="MaDocGia" class="form-label">Độc giả</label>
+                        <select asp-for="MaDocGia" class="form-select" asp-items="ViewBag.DocGiaList">
+                            <option value="">-- Chọn độc giả --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danh sách sách mượn -->
+            <div class="mt-4">
+                <h6>Danh sách sách mượn</h6>
+                <div id="chiTietMuonContainer">
+                    @if (Model?.ChiTietMuonSach != null)
+                    {
+                        foreach (var item in Model.ChiTietMuonSach)
+                        {
+                            <partial name="_ChiTietMuon" model="item" />
+                        }
+                    }
+                </div>
+
+                <button type="button" id="btnThemSach" class="btn btn-sm btn-outline-primary mt-2">
+                    <i class="fas fa-plus"></i> Thêm sách
+                </button>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-primary">Lưu phiếu mượn</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Template cho chi tiết mượn sách (dùng cho JavaScript) -->
+<template id="chiTietMuonTemplate">
+    <partial name="_ChiTietMuonSachPartial" model="new QLThuVienMVC.Models.Detail_Lib.ChiTietMuonSach()" />
+</template>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Thêm sách mới vào form
+            $('#btnThemSach').click(function() {
+                const template = document.getElementById('chiTietMuonTemplate');
+                const clone = template.content.cloneNode(true);
+                $('#chiTietMuonContainer').append(clone);
+
+                // Cập nhật index cho các phần tử mới
+                updateIndexes();
+            });
+
+            // Xử lý xóa chi tiết
+            $(document).on('click', '.btn-xoa-sach', function() {
+                $(this).closest('.chi-tiet-muon').remove();
+                updateIndexes();
+            });
+
+            function updateIndexes() {
+                $('.chi-tiet-muon').each(function(index) {
+                    $(this).find('[name*="ChiTietMuonSach"]').each(function() {
+                        const name = $(this).attr('name').replace(/\[\d+\]/, `[${index}]`);
+                        $(this).attr('name', name);
+                    });
+                });
+            }
+        });
+    </script>
+}

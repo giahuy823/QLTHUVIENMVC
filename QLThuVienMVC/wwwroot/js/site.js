@@ -1,4 +1,12 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿// Xử lý toggle sidebar từ nút trên navbar
+document.getElementById('sidebarToggle')?.addEventListener('click', function () {
+    document.getElementById('toggleSidebar').click();
+});
 
-// Write your JavaScript code.
+// Kiểm tra cookie khi tải trang
+document.addEventListener('DOMContentLoaded', function () {
+    const isCollapsed = document.cookie.split('; ').find(row => row.startsWith('sidebarCollapsed='))?.split('=')[1] === 'true';
+    if (isCollapsed) {
+        document.getElementById('sidebar').classList.add('collapsed');
+    }
+});
