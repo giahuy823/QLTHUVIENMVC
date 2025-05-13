@@ -5136,23 +5136,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\giahu\\.nuget\\packages\\": {},
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MY WORK\\CongNgheNet\\CuoiKi\\QLThuVienMVC_1\\QLThuVienMVC\\QLThuVienMVC\\QLThuVienMVC.csproj",
+      "projectUniqueName": "E:\\Work\\Works\\Công nghệ NET\\Cuối kì\\QLTHUVIENMVC\\QLThuVienMVC\\QLThuVienMVC.csproj",
       "projectName": "QLThuVienMVC",
-      "projectPath": "D:\\MY WORK\\CongNgheNet\\CuoiKi\\QLThuVienMVC_1\\QLThuVienMVC\\QLThuVienMVC\\QLThuVienMVC.csproj",
-      "packagesPath": "C:\\Users\\giahu\\.nuget\\packages\\",
-      "outputPath": "D:\\MY WORK\\CongNgheNet\\CuoiKi\\QLThuVienMVC_1\\QLThuVienMVC\\QLThuVienMVC\\obj\\",
+      "projectPath": "E:\\Work\\Works\\Công nghệ NET\\Cuối kì\\QLTHUVIENMVC\\QLThuVienMVC\\QLThuVienMVC.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "E:\\Work\\Works\\Công nghệ NET\\Cuối kì\\QLTHUVIENMVC\\QLThuVienMVC\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\giahu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5237,7 +5237,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

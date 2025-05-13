@@ -719,3 +719,4 @@ D:\MY WORK\CongNgheNet\CuoiKi\QLThuVienMVC_1\QLThuVienMVC\QLThuVienMVC\obj\Debug
 D:\MY WORK\CongNgheNet\CuoiKi\QLThuVienMVC_1\QLThuVienMVC\QLThuVienMVC\obj\Debug\net8.0\QLThuVienMVC.genruntimeconfig.cache
 D:\MY WORK\CongNgheNet\CuoiKi\QLThuVienMVC_1\QLThuVienMVC\QLThuVienMVC\obj\Debug\net8.0\ref\QLThuVienMVC.dll
 D:\MY WORK\CongNgheNet\CuoiKi\QLThuVienMVC_1\QLThuVienMVC\QLThuVienMVC\obj\Debug\net8.0\QLThuVienMVC.sourcelink.json
+E:\Work\Works\Công nghệ NET\Cuối kì\QLTHUVIENMVC\QLThuVienMVC\obj\Debug\net8.0\QLThuVienMVC.sourcelink.json
