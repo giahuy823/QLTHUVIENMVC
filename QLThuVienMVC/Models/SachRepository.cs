@@ -50,5 +50,48 @@ namespace QLThuVienMVC.Models
             }
             await context.SaveChangesAsync();
         }
+        public async Task<List<PhieuMuonSach>> LayPhieuMuon(string maDocGia)
+        {
+            return await context.PhieuMuonSach
+                       .Where(p => p.MaDocGia == maDocGia)
+                       .ToListAsync();
+        }
+        public async Task<List<PhieuMuonSach>> LayPhieuMuonTheoIdPm(string maPM)
+        {
+            return await context.PhieuMuonSach
+                       .Where(p => p.MaPhieuMuon == maPM)
+                       .ToListAsync();
+        }
+        public async Task<List<ChiTietMuonSach>> LayChiTietPhieuMuon(string maPM)
+        {
+            return await context.ChiTietMuonSach.Where(p => p.MaPhieuMuon == maPM && p.TinhTrangMuon == "Đang chờ duyệt")
+                       .ToListAsync(); ;
+        }
+        public async Task<bool> XacNhanPhieuMuon(string maPhieuMuon, string maNhanVien)
+        {
+            
+            var phieu = await context.PhieuMuonSach
+                .FirstOrDefaultAsync(p => p.MaPhieuMuon == maPhieuMuon);
+
+            if (phieu == null)
+                return false;
+
+           
+            phieu.MaNhanVien = maNhanVien;
+
+            
+            var chiTietList = await context.ChiTietMuonSach
+                .Where(ct => ct.MaPhieuMuon == maPhieuMuon && ct.TinhTrangMuon == "Đang chờ duyệt")
+                .ToListAsync();
+
+            foreach (var ct in chiTietList)
+            {
+                ct.TinhTrangMuon = "Đã duyệt";
+                ct.NgayPhaiTra = DateTime.Now.AddDays(7); 
+            }
+
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }
