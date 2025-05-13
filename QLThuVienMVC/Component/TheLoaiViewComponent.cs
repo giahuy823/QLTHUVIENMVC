@@ -13,9 +13,10 @@ namespace QLThuVienMVC.Component
         {
             sach = _sachRepo;
         }
+       
         public IViewComponentResult Invoke()
         {
-            ViewBag.currentTag = RouteData.Values["tag"];
+            ViewBag.currentTag = HttpContext.Request?.Query["tag"].ToString();
             ViewBag.TotalCount = sach.LaySach().Count();
             ViewBag.TheLoaiCounts = sach.LaySach()
             .GroupBy(b => b.TheLoai)

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QLThuVienMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cd1a50cc364a8556543bb9276559fc9151c2f3d5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31dd5f10c8ec26dfe5ba6953f75d05fb4bbb4592")]
 [assembly: System.Reflection.AssemblyProductAttribute("QLThuVienMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QLThuVienMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

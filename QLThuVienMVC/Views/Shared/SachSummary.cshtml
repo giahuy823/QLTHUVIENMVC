@@ -1,4 +1,9 @@
 ﻿@model Sach
+@{
+    var user = await userManager.GetUserAsync(User);
+    bool isDocGia = signInManager.IsSignedIn(User) && Model.TinhTrang != "Không có sẵn" && await userManager.IsInRoleAsync(user,"DocGia");
+}
+
 <div class="card m-2 p-2" style="width: 18rem;">
     <img src="@Url.Content("~/"+ Model.coverUrl) " class="card-img-top" alt="@Model.TenSach" style="height: 250px; object-fit: contain;" />
     <div class="card-body">
@@ -8,9 +13,26 @@
         <p class="card-text">Năm XB: @Model.NamXuatBan?.Year</p>
         <p class="card-text">Giá trị: @Model.GiaTri?.ToString("n0") VNĐ</p>
         <p class="card-text">Tình trạng: @Model.TinhTrang</p>
-       
+
     </div>
-    <div class="text-end">
-        <a class="btn btn-success">📝 Mượn sách</a>
-    </div>
+    @if (isDocGia)
+    {
+        <a class="btn btn-success" asp-page="/DocGia/MuonSach" asp-route-id="@Model.MaSach">📝 Mượn sách</a>
+    }
+    else
+    {
+        <a class="btn btn-success" onclick="return checkDocGia()" href="#">📝 Mượn sách</a>
+    }
+
 </div>
+
+<script>
+    function checkDocGia(isDocGia) {
+      const result = confirm("Bạn cần đăng nhập với tư cách độc giả để mượn sách.\n\nNhấn OK để đến trang đăng nhập.");
+       if (result) {
+        window.location.href = "/Account/Login"; 
+        return false; 
+       }
+       return true;
+    }
+</script>

@@ -12,6 +12,7 @@ builder.Services.AddDbContext<LibDataContext>(opts =>
 
 });
 builder.Services.AddScoped<InterfaceSach, SachRepository>();
+builder.Services.AddSession();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     options =>
     {
@@ -28,9 +29,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     )
     .AddEntityFrameworkStores<LibDataContext>()
     .AddDefaultTokenProviders();
+builder.Services.AddRazorPages();
 var app = builder.Build();
 
-
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -44,6 +46,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.MapDefaultControllerRoute();
+app.MapRazorPages();
+
+
 
 app.UseAuthorization();
 
