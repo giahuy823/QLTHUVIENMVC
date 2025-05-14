@@ -1,4 +1,5 @@
 ﻿using System.Security.AccessControl;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,6 +9,7 @@ using QLThuVienMVC.Models.UserModel;
 
 namespace QLThuVienMVC.Pages.NhanVien
 {
+    [Authorize(Roles ="NhanVien")]
     public class XacNhanMuonSachModel : PageModel
     {
         private InterfaceSach _repo;
