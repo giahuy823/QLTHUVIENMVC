@@ -1,7 +1,7 @@
 ﻿@model Sach
 @{
     var user = await userManager.GetUserAsync(User);
-    bool isDocGia = signInManager.IsSignedIn(User) && Model.TinhTrang != "Không có sẵn" && await userManager.IsInRoleAsync(user,"DocGia");
+    bool isDocGia = signInManager.IsSignedIn(User) && Model.TinhTrang != "Không có sẵn" && await userManager.IsInRoleAsync(user, "DocGia");
 }
 
 <div class="card m-2 p-2" style="width: 18rem;">
@@ -28,7 +28,7 @@
 
 <script>
     function checkDocGia(isDocGia) {
-      const result = confirm("Bạn cần đăng nhập với tư cách độc giả để mượn sách.\n\nNhấn OK để đến trang đăng nhập.");
+      const result = confirm("Bạn cần đăng nhập với tư cách độc giả để mượn sách hoặc sách không có sẵn.\n\nNhấn OK.");
        if (result) {
         window.location.href = "/Account/Login"; 
         return false; 

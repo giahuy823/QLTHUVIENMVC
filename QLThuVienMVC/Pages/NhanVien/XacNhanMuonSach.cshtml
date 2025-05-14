@@ -1,103 +1,110 @@
 ﻿@page
 @model QLThuVienMVC.Pages.NhanVien.XacNhanMuonSachModel
 @{
+    ViewData["Title"] = "Xác nhận mượn sách";
 }
+<div class="container mt-5">
+    <h1 class="text-primary text-center display-6 mb-4">📚 Xác nhận mượn sách</h1>
 
-<h1 class="text-dark text-center mt-4">Xác nhận mượn sách</h1>
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
-
-<form asp-page="/NhanVien/XacNhanMuonSach" method="post" asp-page-handler="FindDG" class="mb-4">
-    <div class="form-group">
-        <label for="idDocGia">Nhập mã độc giả:</label>
-        <input type="text" class="form-control w-50" id="idDocGia" name="idDocGia" placeholder="Nhập mã độc giả" />
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Tìm kiếm</button>
-</form>
-<div>
-@if (Model.dspm != null && Model.dspm.Any())
-{
-    <h4 class="mt-4">Danh sách phiếu mượn:</h4>
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>Mã phiếu mượn</th>
-                <th>Ngày mượn</th>
-                <th>Mã nhân viên</th>
-                <th>Mã độc giả</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var pm in Model.dspm)
-            {
-                <tr>
-                    <td>@pm.MaPhieuMuon</td>
-                    <td>@pm.NgayMuon.ToString()</td>
-                    <td>@pm.MaNhanVien</td>
-                    <td>@pm.MaDocGia</td>
-                   <td>
-                         <!-- Nút Chi tiết -->
-                        <form asp-page="/NhanVien/XacNhanMuonSach" method="post" asp-page-handler="FindCT" class="mb-0">
-                            <input type="hidden" name="idMaPM" value="@pm.MaPhieuMuon" />
-                            <button type="submit" class="btn btn-danger btn-sm">Chi tiết</button>
-                        </form>
-
-                        <!-- Nút Xác nhận -->
-                        <form asp-page="/NhanVien/XacNhanMuonSach" method="post" asp-page-handler="XacNhan" class="mb-0">
-                            <input type="hidden" name="idMaPM" value="@pm.MaPhieuMuon" />
-                            <button type="submit" class="btn btn-success btn-sm"
-                                onclick="return confirm('Bạn có chắc muốn xác nhận phiếu mượn này?');">Xác nhận</button>
-                           </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-else if (Model.dspm != null)
-{
-    <p class="text-muted">Không tìm thấy phiếu mượn nào cho mã độc giả đã nhập.</p>
-}
-</div>
-<div>
-    @if (Model.dsct != null && Model.dsct.Any())
+    @if (TempData["Success"] != null)
     {
-        <h4 class="mt-4">Danh sách chi tiết phiếu mượn:</h4>
-        <table class="table table-bordered table-striped">
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="mb-4">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+            ⬅ Quay lại trang chủ
+        </a>
+    </div>
+
+    <form asp-page="/NhanVien/XacNhanMuonSach" method="post" asp-page-handler="FindDG" class="mb-5">
+        <div class="form-group">
+            <label for="idDocGia" class="form-label fw-bold">🔍 Nhập mã độc giả:</label>
+            <input type="text" class="form-control w-50" id="idDocGia" name="idDocGia" placeholder="VD: DG001" />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Tìm kiếm</button>
+    </form>
+
+    @if (Model.dspm != null && Model.dspm.Any())
+    {
+        <h4 class="text-success fw-bold">📄 Danh sách phiếu mượn:</h4>
+        <table class="table table-bordered table-hover text-center">
             <thead class="table-dark">
                 <tr>
-                    <th>Mã phiếu mượn</th>
-                    <th>Mã sách</th>
-                    <th>Ngày trả</th>
-                    <th>Tình trạng</th>
-                    
+                    <th class="align-middle">Mã phiếu</th>
+                    <th class="align-middle">Ngày mượn</th>
+                    <th class="align-middle">Nhân viên</th>
+                    <th class="align-middle">Độc giả</th>
+                    <th class="align-middle">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var pm in Model.dsct)
+                @foreach (var pm in Model.dspm)
                 {
                     <tr>
-                        <td>@pm.MaPhieuMuon</td>
-                        <td>@pm.MaSach</td>
-                        <td>@pm.NgayPhaiTra</td>
-                        <td>@pm.TinhTrangMuon</td>
-                        
+                        <td class="align-middle">@pm.MaPhieuMuon</td>
+                        <td class="align-middle">@pm.NgayMuon</td>
+                        <td class="align-middle">@pm.MaNhanVien</td>
+                        <td class="align-middle">@pm.MaDocGia</td>
+                        <td class="align-middle">
+                            <div class="d-flex justify-content-center gap-2">
+                                <form asp-page="/NhanVien/XacNhanMuonSach" method="post" asp-page-handler="FindCT" class="mb-0">
+                                    <input type="hidden" name="idMaPM" value="@pm.MaPhieuMuon" />
+                                    <button type="submit" class="btn btn-outline-info btn-sm">
+                                        📋 Chi tiết
+                                    </button>
+                                </form>
+
+                                <form asp-page="/NhanVien/XacNhanMuonSach" method="post" asp-page-handler="XacNhan" class="mb-0">
+                                    <input type="hidden" name="idMaPM" value="@pm.MaPhieuMuon" />
+                                    <button type="submit" class="btn btn-success btn-sm"
+                                            onclick="return confirm('Bạn có chắc muốn xác nhận phiếu mượn này?');">
+                                        ✅ Xác nhận
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
     }
+    else if (Model.dspm != null)
+    {
+        <p class="text-muted fst-italic">⚠ Không tìm thấy phiếu mượn nào cho mã độc giả đã nhập.</p>
+    }
 
+    @if (Model.dsct != null && Model.dsct.Any())
+    {
+        <h4 class="text-secondary fw-bold mt-5">📑 Danh sách chi tiết phiếu mượn:</h4>
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Mã phiếu mượn</th>
+                    <th>Mã sách</th>
+                    <th>Ngày phải trả</th>
+                    <th>Tình trạng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ct in Model.dsct)
+                {
+                    <tr>
+                        <td>@ct.MaPhieuMuon</td>
+                        <td>@ct.MaSach</td>
+                        <td>@(ct.NgayPhaiTra?.ToString("dd/MM/yyyy") ?? "-")</td>
+                        <td>@ct.TinhTrangMuon</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
     else if (Model.dsct != null)
     {
-        <p class="text-muted">Không tìm thấy chi tiết phiếu mượn nào.</p>
+        <p class="text-muted fst-italic">⚠ Không tìm thấy chi tiết phiếu mượn nào.</p>
     }
 </div>

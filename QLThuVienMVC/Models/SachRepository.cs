@@ -76,9 +76,13 @@ namespace QLThuVienMVC.Models
             if (phieu == null)
                 return false;
 
-           
-            phieu.MaNhanVien = maNhanVien;
+            var dsMaSach = await context.ChiTietMuonSach
+                .Where(ct => ct.MaPhieuMuon == maPhieuMuon)
+                .Select(ct => ct.MaSach)
+                .ToListAsync();
 
+            phieu.MaNhanVien = maNhanVien;
+            
             
             var chiTietList = await context.ChiTietMuonSach
                 .Where(ct => ct.MaPhieuMuon == maPhieuMuon && ct.TinhTrangMuon == "Đang chờ duyệt")
@@ -89,7 +93,13 @@ namespace QLThuVienMVC.Models
                 ct.TinhTrangMuon = "Đã duyệt";
                 ct.NgayPhaiTra = DateTime.Now.AddDays(7); 
             }
+            foreach (var id in dsMaSach)
+            {
+                var sach = await context.Sach.FirstOrDefaultAsync(s => s.MaSach == id);
+                if (sach == null) continue;
 
+                sach.TinhTrang = "Không có sẵn";
+            }
             await context.SaveChangesAsync();
             return true;
         }
