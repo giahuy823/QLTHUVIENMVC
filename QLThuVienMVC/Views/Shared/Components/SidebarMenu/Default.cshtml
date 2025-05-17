@@ -16,6 +16,7 @@
     z-index: 1000;
     }
 
+     
     
 </style>
 
@@ -27,8 +28,9 @@
     <h4 class="menu-text" asp-area="" asp-controller="Home" asp-action="Index">QLThuVienMVC</h4>
     
 
-    <ul class="nav flex-column">
 
+    <ul class="nav flex-column">
+        <li>@await Component.InvokeAsync("TimKiemSach")</li>
         <li class="nav-item">
             <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <i class="fas fa-home"></i>
@@ -41,12 +43,7 @@
         @*         <span class="menu-text">Mượn sách</span> *@
         @*     </a> *@
         @* </li> *@
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="DocGia" asp-action="Index">
-                <i class="fas fa-users"></i>
-                <span class="menu-text">Thông tin độc giả</span>
-            </a>
-        </li>
+    
         <li class="nav-item">
             <button class="nav-link dropdown-toggle" type="button" id="accountToggle">
                 <i class="fas fa-user"></i>
@@ -54,7 +51,7 @@
             </button>
             <ul class="submenu" id="accountDropdown">
                 <li>
-                    <a class="nav-link submenu-item">
+                    <a class="nav-link submenu-item" asp-page="/ThongTin/ThongTin">
                         <i class="fas fa-user-cog"></i>
                         <span class="menu-text">Thông tin cá nhân</span>
                     </a>

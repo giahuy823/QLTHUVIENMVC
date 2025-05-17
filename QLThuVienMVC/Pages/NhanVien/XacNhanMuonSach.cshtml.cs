@@ -43,7 +43,7 @@ namespace QLThuVienMVC.Pages.NhanVien
         public void OnGet()
         {
         }
-        public async Task OnPostFindDG(string idDocGia)
+        public async Task OnPostFindDGAsync(string idDocGia)
         {
             dsct.Clear();
             dspm = await _repo.LayPhieuMuon(idDocGia);

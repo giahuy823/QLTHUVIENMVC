@@ -1,7 +1,8 @@
 ﻿@model Sach
 @{
-    var user = await userManager.GetUserAsync(User);
+    var  user = await userManager.GetUserAsync(User);
     bool isDocGia = signInManager.IsSignedIn(User) && Model.TinhTrang != "Không có sẵn" && await userManager.IsInRoleAsync(user, "DocGia");
+    bool isAdmin = signInManager.IsSignedIn(User) && await userManager.IsInRoleAsync(user, "Admin");
 }
 
 <div class="card m-2 p-2" style="width: 18rem;">
@@ -17,11 +18,23 @@
     </div>
     @if (isDocGia)
     {
-        <a class="btn btn-success" asp-page="/DocGia/MuonSach" asp-route-id="@Model.MaSach">📝 Mượn sách</a>
+        <div class="card-body d-flex gap-2">
+            <a class="btn btn-success flex-fill" asp-page="/DocGia/MuonSach" asp-route-id="@Model.MaSach">📝 Mượn sách</a>
+            <a class="btn btn-primary flex-fill" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach" >📖 Chi tiết</a>
+        </div>
+    }
+    else if (isAdmin)
+    {
+        <div class="card-body">
+            <a class="btn btn-primary w-100" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach" >📖 Chỉnh sửa</a>
+        </div>
     }
     else
     {
-        <a class="btn btn-success" onclick="return checkDocGia()" href="#">📝 Mượn sách</a>
+        <div class="card-body d-flex gap-2">
+            <a class="btn btn-success flex-fill" onclick="return checkDocGia()" href="#">📝 Mượn sách</a>
+            <a class="btn btn-primary flex-fill" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach" >📖 Chi tiết</a>
+        </div>
     }
 
 </div>

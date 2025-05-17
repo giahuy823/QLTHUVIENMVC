@@ -23,16 +23,14 @@
 
     <form method="post" asp-page-handler="TimDG" class="mb-4">
         <div class="form-group d-flex gap-2">
-            <input type="text" class="form-control w-50" id="MaDocGia" name="MaDocGia" placeholder="🔍 Nhập mã độc giả..." />
+            <input type="text" class="form-control w-50" id="MaDocGia" name="MaDocGia" placeholder="🔍 Nhập mã độc giả..." / required>
             <button type="submit" class="btn btn-primary">Tìm kiếm</button>
         </div>
     </form>
 
     @if (Model.dsct != null && Model.dsct.Count > 0)
     {
-        <form method="post" asp-page-handler="XacNhanTra">
-            <input type="hidden" asp-for="MaDocGia" />
-
+   
             <h4 class="text-success fw-bold">📚 Danh sách sách cần trả:</h4>
             <table class="table table-bordered table-hover text-center mt-3">
                 <thead class="table-dark">
@@ -41,35 +39,45 @@
                         <th>Mã sách</th>
                         <th>Ngày phải trả</th>
                         <th>Tình trạng sách</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Model.dsct.Count; i++)
-                    {
-                        <tr>
-                            <td class="align-middle">
-                                <input type="checkbox" name="SachDuocChon" value="@Model.dsct[i].MaSach" />
-                            </td>
-                            <td class="align-middle">@Model.dsct[i].MaSach</td>
-                            <td class="align-middle">@Model.dsct[i].NgayPhaiTra?.ToString("dd/MM/yyyy")</td>
-                            <td class="align-middle">
-                                <select name="TinhTrangSach" class="form-select">
-                                    <option value="Còn mới">Còn mới</option>
-                                    <option value="Hư hỏng">Hư hỏng</option>
-                                </select>
-                            </td>
-                        </tr>
-                    }
+                @for (int i = 0; i < Model.dsct.Count; i++)
+                {
+                    <tr>
+                        <form method="post" asp-page-handler="XacNhanTra">
+                            <input type="hidden" name="MaDocGia" value="@Model.MaDocGia" />
+                         
+
+                        <td class="align-middle">
+                            <input type="checkbox" name="SachDuocChon" value="@Model.dsct[i].MaSach" />
+                        </td>
+                        <td class="align-middle">@Model.dsct[i].MaSach</td>
+                        <td class="align-middle">@Model.dsct[i].NgayPhaiTra?.ToString("dd/MM/yyyy")</td>
+                        <td class="align-middle">
+                            <select name="TinhTrangSach" class="form-select" required>
+                                <option value="">.....</option>
+                                <option value="Còn mới">Còn mới</option>
+                                <option value="Hư hỏng">Hư hỏng</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-success"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xác nhận trả sách này?');">
+                                ✅ Xác nhận trả
+                            </button>
+                        </td>
+                        </form>
+                    </tr>
+                }
                 </tbody>
             </table>
 
-            <div class="text-end">
-                <button type="submit" class="btn btn-success"
-                        onclick="return confirm('Bạn có chắc chắn muốn xác nhận trả những sách đã chọn?');">
-                    ✅ Xác nhận trả
-                </button>
-            </div>
-        </form>
+          
+                
+            
+       
     }
     else if (Model.dsct != null)
     {

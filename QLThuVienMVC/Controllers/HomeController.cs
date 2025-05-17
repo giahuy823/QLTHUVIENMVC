@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QLThuVienMVC.Models;
 using QLThuVienMVC.ViewModels;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 
 namespace QLThuVienMVC.Controllers
@@ -18,17 +19,23 @@ namespace QLThuVienMVC.Controllers
             SachRepo = _sachRepo;
         }
         [HttpGet]
-        public IActionResult Index(string? tag, int page = 1)
+        public IActionResult Index(string? tag, string? name, int page = 1)
         {
-            var Sach = tag == null ? SachRepo.LaySach().ToList() : SachRepo.LaySach()
-                 .Where(c => c.TheLoai == tag).ToList();
-            int totalItems = tag == null ? SachRepo.LaySach().Count() : SachRepo.LaySach()
-                 .Where(c => c.TheLoai == tag).Count();
-            var sachPage = Sach
-                .Where(p => tag == null || p.TheLoai == tag)
+            var sachList = SachRepo.LaySach();
+
+            if (!string.IsNullOrEmpty(tag))
+                sachList = sachList.Where(c => c.TheLoai == tag);
+
+            if (!string.IsNullOrEmpty(name))
+                sachList = sachList.Where(s => s.TenSach.ToLower().Contains(name.ToLower()));
+
+
+            var totalItems = sachList.Count();
+
+            var sachPage = sachList
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToList();   
+                .ToList();
             var vm = new SachViewModel
             {
                 Sachs = sachPage,
@@ -38,7 +45,8 @@ namespace QLThuVienMVC.Controllers
                     TotalItems = totalItems,
                     CurrentPage = page
                 },
-                currentTag = tag
+                currentTag = tag,
+                currentName = name
             };
 
             return View(vm);

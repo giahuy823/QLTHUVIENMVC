@@ -12,6 +12,7 @@ builder.Services.AddDbContext<LibDataContext>(opts =>
 
 });
 builder.Services.AddScoped<InterfaceSach, SachRepository>();
+builder.Services.AddScoped<InterfaceThongTin, ThongTinRepository>();
 builder.Services.AddSession();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
     options =>
@@ -62,5 +63,12 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     await IdentityDataInitializer.SeedRoles(services);
 }
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<LibDataContext>();
+    SeedData.SeedDatabase(context);
+}
+
 
 app.Run();

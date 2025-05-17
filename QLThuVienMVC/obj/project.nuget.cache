@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2romCbxnfh0=",
+  "dgSpecHash": "LCHFHIP9v14=",
   "success": true,
-  "projectFilePath": "D:\\MY WORK\\PHP\\QLThuVienMVC\\QLTHUVIENMVC\\QLThuVienMVC\\QLThuVienMVC.csproj",
+  "projectFilePath": "D:\\MY WORK\\CongNgheNet\\QLTHUVIENMVC (1)\\QLTHUVIENMVC\\QLThuVienMVC\\QLThuVienMVC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\giahu\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\giahu\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
