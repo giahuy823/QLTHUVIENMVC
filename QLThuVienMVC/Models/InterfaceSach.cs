@@ -5,7 +5,7 @@ namespace QLThuVienMVC.Models
     {
         public IQueryable<Sach> LaySach();
         public Task<List<Sach>> LayDanhSachTheoIdAsync(List<string> id);
-
+        public Task<Sach> LaySachTheoId(string id);
         public Task ThemPhieuMuon(string idDocGia, List<string> dsid);
         public Task<bool> ThemPhieuTra(string idDocGia, List<string> dsid, List<string> dstt, string maNhanVien);
         public Task<List<PhieuMuonSach>> LayPhieuMuon(string maDocGia);

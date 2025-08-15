@@ -22,6 +22,10 @@ namespace QLThuVienMVC.Models
             return await context.Sach
             .Where(s => ids.Contains(s.MaSach)).ToListAsync();
         }
+        public async Task<Sach> LaySachTheoId(string id)
+        {
+            return await context.Sach.FirstOrDefaultAsync(s => s.MaSach == id);
+        }
         public async Task ThemPhieuMuon(string idDocGia, List<string> dsidSach)
         {
             var lastCode = await context.PhieuMuonSach
@@ -66,7 +70,8 @@ namespace QLThuVienMVC.Models
         }
         public async Task<List<ChiTietMuonSach>> LayChiTietPhieuMuon(string maPM)
         {
-            return await context.ChiTietMuonSach.Where(p => p.MaPhieuMuon == maPM && p.TinhTrangMuon == "Đang chờ duyệt")
+            return await context.ChiTietMuonSach
+                .Where(p => p.MaPhieuMuon == maPM) //&& p.TinhTrangMuon == "Đang chờ duyệt")
                        .ToListAsync(); ;
         }
         public async Task<bool> XacNhanPhieuMuon(string maPhieuMuon, string maNhanVien)
@@ -123,7 +128,7 @@ namespace QLThuVienMVC.Models
         {
             if (dsid == null || !dsid.Any()) return false;
 
-            // Generate new return slip code
+            
             var lastCode = await context.PhieuTraSach
                 .OrderByDescending(pt => pt.MaPhieuTra)
                 .Select(pt => pt.MaPhieuTra)
@@ -142,16 +147,16 @@ namespace QLThuVienMVC.Models
             };
 
             context.PhieuTraSach.Add(phieuTra);
-            await context.SaveChangesAsync(); // Save first to get the ID
+            await context.SaveChangesAsync(); 
 
             decimal tongTienPhat = 0;
-            var processedBooks = new HashSet<string>(); // Track processed books to avoid duplicates
+            var processedBooks = new HashSet<string>(); 
 
             for (int i = 0; i < dsid.Count; i++)
             {
                 var maSach = dsid[i];
 
-                // Skip if we've already processed this book for this return slip
+               
                 if (processedBooks.Contains(maSach))
                     continue;
 
@@ -207,6 +212,7 @@ namespace QLThuVienMVC.Models
             await context.SaveChangesAsync();
             return true;
         }
+       
     }
 }
 

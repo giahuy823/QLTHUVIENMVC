@@ -101,9 +101,17 @@ namespace QLThuVienMVC.Controllers
 
                     };
 
+                    var existing = _Context.ChangeTracker.Entries<DocGia>()
+                     .FirstOrDefault(e => e.Entity.MaDocGia == newDocGia);
+
+                    if (existing != null)
+                    {
+                        existing.State = EntityState.Detached;
+                    }
+
                     _Context.DocGia.Add(DocGia);
                     await _Context.SaveChangesAsync();
-                    return await CreateUserAndRole(model, "DocGia",null ,newDocGia);
+                    return await CreateUserAndRole(model, "DocGia", null, newDocGia);
 
                 }
                 if (model.Role == "Admin")

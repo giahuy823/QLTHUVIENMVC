@@ -1,8 +1,14 @@
 ﻿@model Sach
+
 @{
     var user = await userManager.GetUserAsync(User);
-    bool isDocGia = signInManager.IsSignedIn(User) && Model.TinhTrang != "Không có sẵn" && await userManager.IsInRoleAsync(user, "DocGia");
+    bool isSignedIn = signInManager.IsSignedIn(User);
+    bool isDocGia = isSignedIn && await userManager.IsInRoleAsync(user, "DocGia");
+    bool isAdmin = isSignedIn && await userManager.IsInRoleAsync(user, "Admin");
+    bool isAvailable = Model.TinhTrang != "Không có sẵn";
+    var currentUrl = Context.Request.Path + Context.Request.QueryString;
 }
+
 
 <div class="card m-2 p-2" style="width: 18rem;">
     <img src="@Url.Content("~/"+ Model.coverUrl) " class="card-img-top" alt="@Model.TenSach" style="height: 250px; object-fit: contain;" />
@@ -15,24 +21,49 @@
         <p class="card-text">Tình trạng: @Model.TinhTrang</p>
 
     </div>
-    @if (isDocGia)
+    @if (isDocGia && isAvailable)
     {
-        <a class="btn btn-success" asp-page="/DocGia/MuonSach" asp-route-id="@Model.MaSach">📝 Mượn sách</a>
+        <div class="card-body d-flex gap-2">
+            <a class="btn btn-success flex-fill"
+               asp-page="/DocGia/MuonSach"
+               asp-route-id="@Model.MaSach"
+               asp-route-returnUrl="@currentUrl">📝 Mượn sách</a>
+
+            <a class="btn btn-primary flex-fill" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach">📖 Chi tiết</a>
+        </div>
+    }
+    else if (isAdmin)
+    {
+        <div class="card-body">
+            <a class="btn btn-primary w-100" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach">📖 Chỉnh sửa</a>
+        </div>
     }
     else
     {
-        <a class="btn btn-success" onclick="return checkDocGia()" href="#">📝 Mượn sách</a>
+        <div class="card-body d-flex gap-2">
+            <a class="btn btn-success flex-fill" href="#" onclick="return checkDocGia(@isSignedIn.ToString().ToLower(), @isAvailable.ToString().ToLower())">📝 Mượn sách</a>
+            <a class="btn btn-primary flex-fill" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach">📖 Chi tiết</a>
+        </div>
     }
+
 
 </div>
 
 <script>
-    function checkDocGia(isDocGia) {
-      const result = confirm("Bạn cần đăng nhập với tư cách độc giả để mượn sách hoặc sách không có sẵn.\n\nNhấn OK.");
-       if (result) {
-        window.location.href = "/Account/Login"; 
-        return false; 
-       }
-       return true;
+    function checkDocGia(isSignedIn, isAvailable) {
+        if (!isSignedIn) {
+            if (confirm("Bạn cần đăng nhập với tư cách độc giả để mượn sách.\n\nNhấn OK để đăng nhập.")) {
+                window.location.href = "/Account/Login";
+            }
+            return false;
+        }
+
+        if (!isAvailable) {
+            alert("Sách hiện không có sẵn để mượn.");
+            return false;
+        }
+
+        alert("Bạn không có quyền mượn sách.");
+        return false;
     }
 </script>

@@ -4,18 +4,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using QLThuVienMVC.Models;
 using QLThuVienMVC.Models.UserModel;
 using System.Text.Json;
-using System.Threading.Tasks;using QLThuVienMVC.Infrastructure;
+using System.Threading.Tasks;
+using QLThuVienMVC.Infrastructure;
 
 namespace QLThuVienMVC.Pages.DocGia
 {
     public class MuonSachModel : PageModel
     {
         private readonly InterfaceSach _repo;
+        [BindProperty(SupportsGet = true)]
+        public string? ReturnUrl { get; set; }
         public List<Sach> dsSach { get; set; } = new List<Sach>();
 
         private const string SESSION_KEY = "MuonSachIds";
 
-        
+
         public List<string> dsid
         {
             get => HttpContext.Session.GetJson<List<string>>(SESSION_KEY) ?? new List<string>();
@@ -29,7 +32,7 @@ namespace QLThuVienMVC.Pages.DocGia
 
             if (user != null)
             {
-                
+
                 if (userManager.IsInRoleAsync(user, "DocGia").Result)
                 {
                     return user.MaDocGia;
@@ -71,7 +74,7 @@ namespace QLThuVienMVC.Pages.DocGia
                 }
             }
 
-            dsid = currentIds; 
+            dsid = currentIds;
             dsSach = await _repo.LayDanhSachTheoIdAsync(currentIds);
         }
 
@@ -86,7 +89,7 @@ namespace QLThuVienMVC.Pages.DocGia
             }
 
             dsSach = await _repo.LayDanhSachTheoIdAsync(currentIds);
-            return Page();
+            return RedirectToPage("Home","Index");
         }
 
         public async Task<IActionResult> OnPostAdd()
@@ -102,11 +105,10 @@ namespace QLThuVienMVC.Pages.DocGia
 
             await _repo.ThemPhieuMuon(idNgDoc, currentIds);
             TempData["SuccessMessage"] = "✅ Mượn sách thành công!";
-            //dsid = new List<string>(); // Xóa danh sách sau khi mượn
-            //dsSach = new List<Sach>(); // Clear danh sách hiển thị
-            
+            dsid = new List<string>(); // Xóa danh sách sau khi mượn
+            dsSach = new List<Sach>(); // Clear danh sách hiển thị
+
             return Page();
         }
     }
 }
-    

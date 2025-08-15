@@ -44,5 +44,12 @@
       <form asp-page="/DocGia/MuonSach" asp-page-handler="Add">
                    <button type="submit" class="btn btn-primary">Xác nhận mượn</button>
                 </form>
-    <a asp-controller="Home" asp-action ="Index" class="btn btn-secondary">Tiếp tục xem sách</a>
+    @if (!string.IsNullOrEmpty(Model.ReturnUrl))
+    {
+        <a href="@Model.ReturnUrl" class="btn btn-secondary">Tiếp tục xem sách</a>
+    }
+    else
+    {
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Tiếp tục xem sách</a>
+    }
 </div>

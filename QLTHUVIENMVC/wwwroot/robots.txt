@@ -1,0 +1,21 @@
+﻿User-agent: *
+Disallow: /admin/
+Disallow: /public/
+Disallow: /config/
+Disallow: /assets/ajaxs/
+Disallow: /change-password
+Disallow: /Logout
+
+Allow: /index
+Allow: /login
+Allow: /register
+Allow: /groups/
+Allow: /account/
+Allow: /bank
+Allow: /about-me
+Allow: /recharge
+Allow: /history-account
+Allow: /history-game-recharge
+Allow: /history-recharge
+
+Sitemap: https://shopgametheboys.infinityfreeapp.com//sitemap.xml

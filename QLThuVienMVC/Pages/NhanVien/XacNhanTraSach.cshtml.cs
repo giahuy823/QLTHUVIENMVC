@@ -44,30 +44,44 @@ namespace QLThuVienMVC.Pages.NhanVien
         public void OnGet()
         {
         }
-        public async Task<IActionResult> OnPostTimDG(string MaDocGia)
+        public async Task<IActionResult> OnPostTimDG(string? MaDocGia)
         {
-            this.MaDocGia = MaDocGia.Trim();
+            //this.MaDocGia = MaDocGia.Trim();
             dsct = await _repo.LayPCThieuMuonDaDuyet(this.MaDocGia);
             return Page();
         }
 
         public async Task<IActionResult> OnPostXacNhanTra()
         {
-            if (SachDuocChon.Count == 0 || TinhTrangSach.Count != SachDuocChon.Count)
+            string maNV = LayMa();
+
+            if (SachDuocChon.Count == 0 || TinhTrangSach.Count == 0 || SachDuocChon.Count != TinhTrangSach.Count)
             {
-                TempData["Error"] = "Bạn chưa chọn đủ sách và tình trạng!";
-                return RedirectToPage();
+                TempData["Error"] = "Vui lòng chọn sách và tình trạng sách hợp lệ.";
+                dsct = await _repo.LayPCThieuMuonDaDuyet(MaDocGia);
+                return Page();
             }
 
-            string maNV = LayMa();
+            
             bool result = await _repo.ThemPhieuTra(MaDocGia, SachDuocChon, TinhTrangSach, maNV);
 
             if (result)
-                TempData["Success"] = "Xác nhận trả sách thành công.";
-            else
-                TempData["Error"] = "Xác nhận thất bại.";
+            {
+                TempData["Success"] = "✅ Đã xác nhận trả sách thành công.";
 
-            return RedirectToPage();
+               
+                var danhSachHienTai = await _repo.LayPCThieuMuonDaDuyet(MaDocGia);
+                dsct = danhSachHienTai.Where(ct => !SachDuocChon.Contains(ct.MaSach)).ToList();
+
+                return Page(); 
+            }
+            else
+            {
+                TempData["Error"] = "❌ Xác nhận trả sách thất bại.";
+                dsct = await _repo.LayPCThieuMuonDaDuyet(MaDocGia);
+                return Page();
+            }
         }
     }
 }
+
