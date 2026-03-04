@@ -5,48 +5,88 @@
     bool isSignedIn = signInManager.IsSignedIn(User);
     bool isDocGia = isSignedIn && await userManager.IsInRoleAsync(user, "DocGia");
     bool isAdmin = isSignedIn && await userManager.IsInRoleAsync(user, "Admin");
+    bool isThuKho = isSignedIn && await userManager.IsInRoleAsync(user, "ThuKho");
     bool isAvailable = Model.TinhTrang != "Không có sẵn";
     var currentUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
 
-<div class="card m-2 p-2" style="width: 18rem;">
-    <img src="@Url.Content("~/"+ Model.coverUrl) " class="card-img-top" alt="@Model.TenSach" style="height: 250px; object-fit: contain;" />
-    <div class="card-body">
-        <h5 class="card-title">@Model.TenSach</h5>
-        <p class="card-text">Tác giả: @Model.TacGia</p>
-        <p class="card-text">Thể loại: @Model.TheLoai</p>
-        <p class="card-text">Năm XB: @Model.NamXuatBan?.Year</p>
-        <p class="card-text">Giá trị: @Model.GiaTri?.ToString("n0") VNĐ</p>
-        <p class="card-text">Tình trạng: @Model.TinhTrang</p>
+<div class="card m-2 p-2 shadow-sm" style="width: 18rem; display: flex; flex-direction: column;">
+    <img src="@Url.Content("~/" + Model.coverUrl)" class="card-img-top" alt="@Model.TenSach" style="height: 250px; object-fit: contain;" />
 
+    <div class="card-body d-flex flex-column">
+        <h5 class="card-title text-truncate">@Model.TenSach</h5>
+        <p class="card-text mb-1 small"><strong>Tác giả:</strong> @Model.TacGia</p>
+        <p class="card-text mb-1 small"><strong>Thể loại:</strong> @Model.TheLoai</p>
+        <p class="card-text mb-1 small"><strong>Năm XB:</strong> @Model.NamXuatBan?.Year</p>
+        <p class="card-text mb-1 small text-danger"><strong>Giá:</strong> @Model.GiaTri?.ToString("n0") VNĐ</p>
+        <p class="card-text mb-3 small"><strong>Tình trạng:</strong> <span class="badge @(isAvailable ? "bg-success" : "bg-danger")">@Model.TinhTrang</span></p>
+
+        <div class="mt-auto">
+
+            <div class="row g-2">
+              
+
+                @if (isDocGia && isAvailable)
+                {
+                   
+                    <div class="col-6">
+                        <a class="btn btn-success btn-sm w-100 d-flex align-items-center justify-content-center"
+                           style="height: 40px;"
+                           asp-page="/DocGia/MuonSach"
+                           asp-route-id="@Model.MaSach"
+                           asp-route-returnUrl="@currentUrl">
+                            <span>📝 Mượn</span>
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center"
+                           style="height: 40px;"
+                           asp-page="/ThongTin/ThongTin"
+                           asp-route-id="@Model.MaSach">
+                            <span>📖 Chi tiết</span>
+                        </a>
+                    </div>
+                }
+                else if (isAdmin)
+                {
+                 
+                    <div class="col-12">
+                        <a class="btn btn-warning btn-sm w-100 d-flex align-items-center justify-content-center"
+                           style="height: 40px;"
+                           asp-page="/ThongTin/ThongTin"
+                           asp-route-id="@Model.MaSach">
+                            <span>⚙️ Chỉnh sửa</span>
+                        </a>
+                    </div>
+                }
+                else if (isThuKho)
+                {
+
+                    <div class="col-12">
+                        <a class="btn btn-warning btn-sm w-100 d-flex align-items-center justify-content-center"
+                           style="height: 40px;"
+                           asp-page="/ThongTin/ThongTin"
+                           asp-route-id="@Model.MaSach">
+                            <span>⚙️ Chỉnh sửa</span>
+                        </a>
+                    </div>
+                }
+                else
+                {
+              
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm w-100 d-flex align-items-center justify-content-center"
+                           style="height: 40px;"
+                           asp-page="/ThongTin/ThongTin"
+                           asp-route-id="@Model.MaSach">
+                            <span>📖 Xem chi tiết</span>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    @if (isDocGia && isAvailable)
-    {
-        <div class="card-body d-flex gap-2">
-            <a class="btn btn-success flex-fill"
-               asp-page="/DocGia/MuonSach"
-               asp-route-id="@Model.MaSach"
-               asp-route-returnUrl="@currentUrl">📝 Mượn sách</a>
-
-            <a class="btn btn-primary flex-fill" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach">📖 Chi tiết</a>
-        </div>
-    }
-    else if (isAdmin)
-    {
-        <div class="card-body">
-            <a class="btn btn-primary w-100" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach">📖 Chỉnh sửa</a>
-        </div>
-    }
-    else
-    {
-        <div class="card-body d-flex gap-2">
-            <a class="btn btn-success flex-fill" href="#" onclick="return checkDocGia(@isSignedIn.ToString().ToLower(), @isAvailable.ToString().ToLower())">📝 Mượn sách</a>
-            <a class="btn btn-primary flex-fill" asp-page="/ThongTin/ThongTin" asp-route-id="@Model.MaSach">📖 Chi tiết</a>
-        </div>
-    }
-
-
 </div>
 
 <script>

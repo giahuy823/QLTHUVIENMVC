@@ -7,7 +7,7 @@ using QLThuVienMVC.Models;
 
 namespace QLThuVienMVC.Pages.ThongTin
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin,ThuKho")]
     public class ChinhSuaSachModel : PageModel
     {
         private readonly InterfaceSach repoSach;

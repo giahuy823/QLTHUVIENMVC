@@ -15,14 +15,14 @@
         <form asp-action="ChangePass" method="post" class="needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-            <div class="mb-3">
+            @* <div class="mb-3">
                 <label asp-for="Email" class="form-label fw-bold"></label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                     <input asp-for="Email" class="form-control" placeholder="Nhập email" required />
                 </div>
                 <span asp-validation-for="Email" class="text-danger small"></span>
-            </div>
+            </div> *@
 
             <div class="mb-3">
                 <label asp-for="Password" class="form-label fw-bold"></label>

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QLThuVienMVC.Models;
@@ -12,7 +12,7 @@ namespace QLThuVienMVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private InterfaceSach SachRepo;
-        public int pageSize = 8;
+        public int pageSize = 9;
         public HomeController(ILogger<HomeController> logger, InterfaceSach _sachRepo)
         {
             _logger = logger;
@@ -24,10 +24,10 @@ namespace QLThuVienMVC.Controllers
         [Route("page/{page}")]
         public IActionResult Index(string? tag, string? name, int page = 1)
         {
-            var sachList = SachRepo.LaySach();
+            var sachList = SachRepo.LaySach().AsQueryable();
 
             if (!string.IsNullOrEmpty(tag))
-                sachList = sachList.Where(c => c.TheLoai == tag);
+                sachList = sachList.Where(c => c.TheLoai == tag).AsQueryable();
 
             if (!string.IsNullOrEmpty(name))
                 sachList = sachList.Where(s => s.TenSach.ToLower().Contains(name.ToLower()));
@@ -67,5 +67,7 @@ namespace QLThuVienMVC.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+       
     }
 }

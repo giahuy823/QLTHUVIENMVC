@@ -53,13 +53,13 @@ app.UseAuthentication(); // nếu dùng Identity
 app.UseAuthorization();
 
 //app.MapControllerRoute(
-//    name: "pagination",
-//    pattern: "page/{page}",
-//    defaults: new { controller = "Home", action = "Index" });
+//    name: "pagination",
+//    pattern: "page/{page}",
+//    defaults: new { controller = "Home", action = "Index" });
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+  name: "default",
+  pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 

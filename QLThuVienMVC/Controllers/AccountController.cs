@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,8 @@ using Microsoft.Identity.Client;
 using QLThuVienMVC.Models;
 using QLThuVienMVC.Models.UserModel;
 using QLThuVienMVC.ViewModels;
+using System.Diagnostics.Eventing.Reader;
+using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QLThuVienMVC.Controllers
@@ -53,95 +54,32 @@ namespace QLThuVienMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (ModelState.IsValid)
+            var lastDocGia = await _Context.DocGia
+                .OrderByDescending(dg => dg.MaDocGia)
+                .FirstOrDefaultAsync();
+
+   
+            string newMaDocGia = GenerateCode.GenerateNextCode(
+                lastDocGia?.MaDocGia,
+                "DG"
+            );
+
+            var docGia = new DocGia
             {
+                MaDocGia = newMaDocGia,
+                MaNhanVien = "NV001",
+                HoTen = model.Name,
+                Email = model.Email,
+                NgayLapThe = DateTime.Now
+            };
 
-                if (model.Role == "NhanVien")
-                {
+            _Context.DocGia.Add(docGia);
+            await _Context.SaveChangesAsync();
 
-                    var lastNhanVien = await _Context.NhanVien
-                    .OrderByDescending(nv => nv.MaNhanVien)
-                    .FirstOrDefaultAsync();
-
-                    string newMaNhanVien = GenerateCode.GenerateNextCode(lastNhanVien?.MaNhanVien, "NV");
-
-                    var NhanVien = new NhanVien()
-                    {
-                        MaNhanVien = newMaNhanVien,
-                        HoTen = model.Name,
-                        DiaChi = null,
-                        SoDienThoai = null,
-                        BangCap = "Thạc sĩ",
-                        BoPhan = "Phòng nhân viên",
-                        ChucVu = "Nhân viên",
-
-                    };
-
-                    _Context.NhanVien.Add(NhanVien);
-                    await _Context.SaveChangesAsync();
-                    return await CreateUserAndRole(model, "NhanVien", newMaNhanVien);
-                }
-                if (model.Role == "DocGia")
-                {
-
-                    var lastDocGia = await _Context.DocGia
-                    .OrderByDescending(nv => nv.MaDocGia)
-                    .FirstOrDefaultAsync();
-
-                    string newDocGia = GenerateCode.GenerateNextCode(lastDocGia?.MaNhanVien, "DG");
-
-                    var DocGia = new DocGia()
-                    {
-                        MaDocGia = newDocGia,
-                        MaNhanVien = "NV001",
-                        HoTen = model.Name,
-                        Email = model.Email,
-                        NgayLapThe = DateTime.Now
-
-                    };
-
-                    var existing = _Context.ChangeTracker.Entries<DocGia>()
-                     .FirstOrDefault(e => e.Entity.MaDocGia == newDocGia);
-
-                    if (existing != null)
-                    {
-                        existing.State = EntityState.Detached;
-                    }
-
-                    _Context.DocGia.Add(DocGia);
-                    await _Context.SaveChangesAsync();
-                    return await CreateUserAndRole(model, "DocGia", null, newDocGia);
-
-                }
-                if (model.Role == "Admin")
-                {
-
-                    var lastNhanVien = await _Context.NhanVien
-                    .OrderByDescending(nv => nv.MaNhanVien)
-                    .FirstOrDefaultAsync();
-
-                    string newMaNhanVien = GenerateCode.GenerateNextCode(lastNhanVien?.MaNhanVien, "NV");
-
-                    var NhanVien = new NhanVien()
-                    {
-                        MaNhanVien = newMaNhanVien,
-                        HoTen = model.Name,
-                        DiaChi = null,
-                        SoDienThoai = null,
-                        BangCap = "Thạc sĩ",
-                        BoPhan = "Phòng nhân viên",
-                        ChucVu = "Quản trị viên",
-
-                    };
-
-                    _Context.NhanVien.Add(NhanVien);
-                    await _Context.SaveChangesAsync();
-                    return await CreateUserAndRole(model, "Admin", newMaNhanVien);
-                }
-
-            }
-            return View(model);
+            return await CreateUserAndRole(model, "DocGia", null, newMaDocGia);
         }
         public IActionResult VerifyEmail()
         {
@@ -235,6 +173,11 @@ namespace QLThuVienMVC.Controllers
             return View(model);
         }
 
-    
+        [AllowAnonymous] 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }

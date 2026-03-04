@@ -4,6 +4,7 @@
 @{
     var user = await userManager.GetUserAsync(User);
     bool isAdmin = await userManager.IsInRoleAsync(user, "Admin");
+    bool isThuKho = await userManager.IsInRoleAsync(user, "ThuKho");
 }
 @if (TempData["ErrorMessage"] != null)
 {
@@ -222,7 +223,7 @@
 
                     <!-- Nút điều hướng -->
                     <div class="mt-4 d-flex justify-content-end gap-3">
-                        @if (isAdmin)
+                        @if (isAdmin || isThuKho)
                         {
                             <a asp-page="/ThongTin/ChinhSuaSach" asp-route-id="@Model.CurrentSach.MaSach"
                                class="btn btn-warning px-4">

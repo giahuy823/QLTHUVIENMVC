@@ -14,7 +14,7 @@ namespace QLThuVienMVC.Pages.DocGia
         private readonly InterfaceSach _repo;
         [BindProperty(SupportsGet = true)]
         public string? ReturnUrl { get; set; }
-        public List<Sach> dsSach { get; set; } = new List<Sach>();
+        public List<Sach> dsSach { get; set; }
 
         private const string SESSION_KEY = "MuonSachIds";
 

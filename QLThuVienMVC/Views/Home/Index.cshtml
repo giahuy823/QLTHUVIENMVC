@@ -22,9 +22,13 @@
         {
             <p>Hello Staff, @User.Identity.Name</p>
         }
+        else if (User.IsInRole("ThuKho"))
+        {
+            <p>Hello Staff, @User.Identity.Name</p>
+        }
         else
         {
-            <p>Hello @User.Identity.Name, your role is not recognized.</p>
+            <p>Hello, @User.Identity.Name.</p>
         }
     }
     else
@@ -39,7 +43,7 @@
             )
 </div>
 <div>
-    <h1><strong>Sách hiện có: </strong></h1>
+    <h1 style="color:#FFB3CB"><strong>Sách hiện có: </strong></h1>
     @if(Model != null)
     {
         <div class="d-flex flex-wrap gap-3">
@@ -54,12 +58,7 @@
         <div class="text-center text-dark">Chưa có sách</div>
     }
 </div>
-<div style="display: flex; align-items: center; gap: 8px;">
-    <span>Trang 2</span>
-    <a class="btn btn-success" asp-action="Index" asp-route-page="2">
-        <i class="fas fa-arrow-right"></i> <!-- hoặc để trống -->
-    </a>
-</div>
+
 
 <div page-model="@Model.Paging"
      page-action="Index"

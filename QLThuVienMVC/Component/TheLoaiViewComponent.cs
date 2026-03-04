@@ -1,6 +1,7 @@
 ﻿using QLThuVienMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using QLThuVienMVC.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace QLThuVienMVC.Component
@@ -19,7 +20,7 @@ namespace QLThuVienMVC.Component
             ViewBag.currentTag = HttpContext.Request?.Query["tag"].ToString();
             ViewBag.TotalCount = sach.LaySach().Count();
             ViewBag.TheLoaiCounts = sach.LaySach()
-            .GroupBy(b => b.TheLoai)
+            .GroupBy(b=>b.TheLoai)
             .ToDictionary(g => g.Key, g => g.Count());
             var theloai = sach.LaySach().Select(s => s.TheLoai).Distinct().OrderBy(s => s);
             return View(theloai);

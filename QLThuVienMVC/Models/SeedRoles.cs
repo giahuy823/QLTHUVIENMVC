@@ -6,7 +6,7 @@ namespace QLThuVienMVC.Models
         public static async Task SeedRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            string[] roles = { "Admin", "NhanVien", "DocGia" };
+            string[] roles = { "Admin", "NhanVien", "DocGia","ThuKho" };
 
             foreach (var role in roles)
             {
